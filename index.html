@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+<meta charset="utf-8">
+<title>Blurry popup demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+<script src="jslib/jquery-1.8.2.min.js"></script>
+<script src="jslib/jquery-ui-1.8.24.custom.min.js"></script>
+<script src="jslib/html2canvas.js"></script>
+
+<style>
+html, body {
+	height:100%;
+	margin:0;
+	font-family:Helvetica;
+
+}
+.bg[data-type='0'] {
+	width:100%;
+	height:1700px;
+	background:url(images/bg.png) no-repeat 0 0;
+}
+.bg[data-type='1'] {
+	width:100%;
+	height:1265px;
+	background:url(images/1.jpg) no-repeat 0 0;
+}
+.bg[data-type='2'] {
+	width:100%;
+	height:929px;
+	background:url(images/2.jpg) no-repeat 0 0;
+}
+
+h1 {
+	margin-top:0;
+	padding:0.5em 0.5em 0.2em;
+}
+
+
+.btn_popup {
+	padding:0 1.25em;
+}
+
+
+.popup_wrapper {
+	overflow: hidden;
+	position: absolute;
+	z-index: 1000;
+	top: 200px;
+	left: 200px;
+	width: 400px;
+	height: 400px;
+	-webkit-transform: translate3d(0,0,0);
+	background: #fff;
+	cursor: move
+}
+
+.popup_bg {
+	width: 100%;
+	height: 100%;
+	background-position: -200px -200px;
+	background-repeat: no-repeat;
+	-webkit-filter: blur(20px);
+}
+
+.popup_content {
+	position: absolute;
+	left: 0;
+	top: 0;
+	padding:1em;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.25);
+}
+
+.dimmed {
+	position: fixed;
+	z-index: 999;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.15)
+}
+</style>
+</head>
+
+<body>
+<div class="bg" data-type="0">
+	<h1>Blurry popup demo</h1>
+	<a href="javascript:;" class="btn_popup">Show popup</a>
+	<a href="javascript:;" class="btn_change_bg">Change BG</a>
+</div>
+
+<script type="text/template" id="popupTemplate">
+	<h1>
+		Hello!<br>
+		This is the example.<br>
+		You can drag me.
+	</h1>
+	<a href='javascript:;' class='d_btn type_black btn_close'>Close popup</a>
+</script>
+
+<script>
+var makePopup = function(){
+	html2canvas(document.body, {
+		onrendered: function(canvas) {
+			var result = canvas.toDataURL().toString();
+			
+			var popWrap = $(document.createElement("div")).addClass("popup_wrapper"),
+				popBg = $(document.createElement("div")).addClass("popup_bg"),
+				popContent = $(document.createElement("div")).addClass("popup_content"),
+				dimmed = $(document.createElement("div")).addClass("dimmed");
+			
+			popContent.html($("#popupTemplate").html());
+			popContent.find(".btn_close").on("click", function(){
+				popWrap.draggable("destroy").unbind().remove();
+				dimmed.remove();
+			});
+			
+			popBg.css({
+				"backgroundImage": "url(" + result + ")",
+			});
+
+			popWrap.append(popBg, popContent);
+			$("body").append(dimmed, popWrap);
+			
+			popWrap.draggable({
+				"drag": function(event, ui){
+					popBg.css({
+						"backgroundPosition": (ui.position.left * -1) + "px " + (ui.position.top * -1) + "px"
+					});
+				}
+			});
+		}
+	});
+};
+
+$(".btn_popup").on("click", makePopup);
+$(".btn_change_bg").on("click", function(){
+	var current = $(".bg").attr("data-type"),
+		next = ( current < 2 ) ? ++current : 0;
+	$(".bg").attr("data-type", next);
+});
+</script>
+
+</body>
+</html>
