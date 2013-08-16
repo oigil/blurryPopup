@@ -1,8 +1,9 @@
 <h1>iOS7 style blurry popup demo. <small>(for WEBKIT only!)</small></h1>
+<big><a href="http://blurpopup.labs.daum.net">http://blurpopup.labs.daum.net</a></big>
 <p>
 	This page uses webkit filter and <a href="http://html2canvas.hertzen.com/" target="_blank">Hertzen's html2canvas</a> script for background rendering<br>
 	and <a href="http://jqueryui.com/" target="_blank">jQuery-UI</a> for draggable popup layer. And the CSS3's blur effect works in webkit browsers only. <br>
-	<a href="http://github.com/oigil/blurryPopup">Check this source.</a><br>	
+	
 </p>
 <p>
 	<small>
