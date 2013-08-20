@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="iOS7 style blurry popup demo"/>
 <meta property="og:description" content="This demo page uses webkit filter and html2canvas for background rendering."/>
 <meta property="og:url" content="http://blurpopup.labs.daum.net/" />
@@ -13,6 +14,7 @@
 <script src="jslib/jquery-1.8.2.min.js"></script>
 <script src="jslib/jquery-ui-1.8.24.custom.min.js"></script>
 <script src="jslib/html2canvas.js"></script>
+<script src="jslib/jquery-touch-punch.min.js"></script>
 
 <style>
 html, body { 
@@ -21,12 +23,12 @@ html, body {
 	font-family:Helvetica;
 }
 .nav_top {
-	height:50px;
 	position:fixed;
+	overflow:hidden;
 	top:0;
 	z-index:9999;
 	width:100%;
-	height:30px;
+	height:28px;
 	padding:10px;
 	border-bottom:1px solid #ddd;
 	background:#F3F3F3;
@@ -37,6 +39,14 @@ html, body {
 	margin:0;
 	font-size:24px; 
 }
+img.github {
+	position: fixed; 
+	top: 48px; 
+	right: 0; 
+	border: 0;
+	z-index:9999;
+}
+
 h1 small { 
 	font-style:italic;
 	color:purple 
@@ -55,35 +65,55 @@ a, a:visited {
 	color:blue;
 }
 
-.bg {padding-top:80px;}
-.bg[data-type='0'] {
+.bg {
 	width:100%;
-	height:1720px;
-	background:url(images/bg.png) no-repeat 0 100%;
+	height:1000px;
+	padding-top:90px;
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+.bg[data-type='0'] {	
+	background-image:url(images/bg1.jpg);
 }
 .bg[data-type='1'] {
-	width:100%;
-	height:1185px;
-	background:url(images/1.jpg) no-repeat 0 0;
+	background-image:url(images/bg2.jpg);
 }
 .bg[data-type='2'] {
-	width:100%;
-	height:849px;
-	background:url(images/2.jpg) no-repeat 0 0;
+	background-image:url(images/bg3.jpg);
 }
+@media screen and (max-width:640px) {
+	.nav_top {
+		height:50px;
+		overflow:hidden;
+	}
+	.nav_top h1 {
+		float:none;
+		font-size:20px;
+	}
+	p {
+		font-size:12px;
+	}
+	img.github {
+		top:70px;
+		width:100px;
+	}
+
+}
+
 
 .btn_popup {
 	padding:0 1.25em;
 }
 
+
 .popup_wrapper {
 	overflow: hidden;
 	position: absolute;
 	z-index: 1000;
-	top: 200px;
-	left: 200px;
-	width: 400px;
-	height: 400px;
+	top: 100px;
+	left: 100px;
+	width: 300px;
+	height: 300px;
 	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
 	background: #fff;
@@ -93,8 +123,9 @@ a, a:visited {
 .popup_bg {
 	width: 100%;
 	height: 100%;
-	background-position: -200px -200px;
+	background-position: -100px -100px;
 	background-repeat: no-repeat;
+	-webkit-transform: translate3d(0,0,0);
 	-webkit-filter: blur(20px);
 	filter: blur(20px);
 }
@@ -103,10 +134,11 @@ a, a:visited {
 	position: absolute;
 	left: 0;
 	top: 0;
-	padding:1em;
 	width: 100%;
 	height: 100%;
+	padding:1em;
 	background: rgba(255, 255, 255, 0.25);
+	-webkit-transform: translate3d(0,0,0);
 }
 
 .dimmed {
@@ -123,7 +155,7 @@ a, a:visited {
 
 <body>
 <div class="nav_top">
-	<h1>iOS7 style blurry popup demo. <small>(for WEBKIT only!)</small></h1>
+	<h1>iOS7 style popup demo.</h1>
 </div>
 
 <div class="bg" data-type="0">
@@ -132,8 +164,7 @@ a, a:visited {
 	<a href="javascript:;" class="btn_change_bg">Change BG</a>
 	<p>
 		This page uses webkit filter and <a href="http://html2canvas.hertzen.com/" target="_blank">Hertzen's html2canvas</a> script for background rendering<br>
-		and <a href="http://jqueryui.com/" target="_blank">jQuery-UI</a> for draggable popup layer. And the CSS3's blur effect works in webkit browsers only. <br>
-		<a href="http://github.com/oigil/blurryPopup">Check this source.</a><br>	
+		and <a href="http://jqueryui.com/" target="_blank">jQuery-UI</a> for draggable popup layer. And the CSS3's <strong>blur effect works in webkit browsers</strong> only. 			<br>(If you're using an Android, test this page on Android Chrome.) <br>
 	</p>
 	<p>
 		<small>
@@ -141,10 +172,11 @@ a, a:visited {
 			<small>Web standards tech team, <a href="http://www.daumcorp.com" target="_blank">Daum communications.</a></small><br><br>
 			<a href="index_ko.html">&rarr; 한글페이지 보기</a>
 		</small>
+		
 	</p>
 </div>
 
-<a href="http://github.com/oigil/blurryPopup"><img style="position: fixed; top: 50px; right: 0; border: 0;z-index:9999;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+<a href="http://github.com/oigil/blurryPopup"><img class="github" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
 
 <script type="text/template" id="popupTemplate">
